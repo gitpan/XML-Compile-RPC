@@ -396,7 +396,7 @@ See L<XML::Compile/"Administration">
 
 =head2 Handlers
 
-$obj-E<gt>B<call>(METHOD, PARAM-PAIRS)
+$obj-E<gt>B<call>(METHOD, PARAM-(HASH|PAIR)S)
 
 =over 4
 
@@ -407,8 +407,17 @@ example:
      or die "error: $response\n";
  my $trace = $rpc->trace;  # facts about the last call
 
- # same call, via autoload
+ # same call, via autoload. One simple parameter
  my ($rc, $response) = $rpc->getQuote(string => 'IBM');
+
+ # function produces a HASH, one complex parameter
+ my $struct = struct_from_hash string => symbol => 'IBM';
+ my ($rc, $response) = $rpc->call('getQuote', $struct);
+ my ($rc, $response) = $rpc->getQuote($struct);
+
+ # or mixed simple and complex types
+ # Three parameters, of which two are complex structures.
+ my ($rc, $ans) = $rcp->someMethod($struct, int => 3, $struct2);
 
 =back
 
@@ -434,7 +443,7 @@ will add some more header lines to the request before it is sent.
 
 =head1 SEE ALSO
 
-This module is part of XML-Compile-RPC distribution version 0.10,
+This module is part of XML-Compile-RPC distribution version 0.11,
 built on October 24, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
 
 All modules in this suite:

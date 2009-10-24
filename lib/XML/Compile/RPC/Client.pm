@@ -7,7 +7,7 @@ use strict;
 
 package XML::Compile::RPC::Client;
 use vars '$VERSION';
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 use base 'XML::Compile::RPC';
 
@@ -91,8 +91,9 @@ sub _callmsg($@)
 
     my @params;
     while(@_)
-    {   my ($type, $value) = (shift, shift);
-        push @params, { value => { $type => $value }};
+    {   my $type  = shift;
+        my $value = UNIVERSAL::isa($type, 'HASH') ? $type : {$type => shift};
+        push @params, { value => $value };
     }
 
     my $doc = XML::LibXML::Document->new('1.0', 'UTF-8');
