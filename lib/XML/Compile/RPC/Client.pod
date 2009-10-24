@@ -1,0 +1,465 @@
+=head1 NAME
+
+XML::Compile::RPC::Client - XML-RPC based on unofficial schema
+
+=head1 INHERITANCE
+
+ XML::Compile::RPC::Client
+   is a XML::Compile::RPC
+   is a XML::Compile::Cache
+   is a XML::Compile::Schema
+   is a XML::Compile
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+Client XML-RPC implementation, based on an unofficial XML-RPC schema. The
+schema used is an extended version from one produced by Elliotte Rusty Harold.
+
+Using the schema with L<XML::Compile|XML::Compile> means that the messages are validated.
+Besides, XML::Compile offers you some tricks: for instance, you can pass
+a C<time()> result (seconds since epoc)to a C<dateTime.iso8601> field,
+which will automaticallu get formatted into the right format.
+
+In XML-RPC, values which do not explicitly specify their type are
+interpreted as string. So, you may encounter two notations for the
+same:
+
+    <value><string>Hello, World!</string></value>
+    <value>Hello, World!</value>
+
+The reader (used to produce the C<$response>) will translate the second
+syntax in the first. This simplifies your code.
+
+=head1 METHODS
+
+=head2 Constructors
+
+XML::Compile::RPC::Client-E<gt>B<new>(OPTIONS)
+
+=over 4
+
+ Option                --Defined in     --Default
+ allow_undeclared        XML::Compile::Cache  <false>
+ any_element             XML::Compile::Cache  'SKIP_ALL'
+ autoload_underscore_is                   '_'
+ block_namespace         XML::Compile::Schema  []
+ destination                              <required>
+ hook                    XML::Compile::Schema  undef
+ hooks                   XML::Compile::Schema  []
+ http_header                              []
+ ignore_unused_tags      XML::Compile::Schema  <false>
+ key_rewrite             XML::Compile::Schema  []
+ opts_readers            XML::Compile::RPC  []
+ opts_rw                 XML::Compile::RPC  []
+ opts_writers            XML::Compile::RPC  []
+ prefixes                XML::Compile::Cache  <smart>
+ schema_dirs             XML::Compile     undef
+ typemap                 XML::Compile::Schema  {}
+ user_agent                               <created internally>
+ xmlformat                                0
+
+. allow_undeclared => BOOLEAN
+
+. any_element => CODE|'TAKE_ALL'|'SKIP_ALL'|'ATTEMPT'
+
+. autoload_underscore_is => STRING
+
+=over 4
+
+When calls are made using the autoload mechanism, then you will encounter
+problems when the method names contain dashes. So, with this option, you
+can use underscores which will B<all> be replaced to STRING value specified.
+
+=back
+
+. block_namespace => NAMESPACE|TYPE|HASH|CODE|ARRAY
+
+. destination => URI
+
+=over 4
+
+The address of the XML-RPC server.
+
+=back
+
+. hook => ARRAY-WITH-HOOKDATA | HOOK
+
+. hooks => ARRAY-OF-HOOK
+
+. http_header => ARRAY|OBJECT
+
+=over 4
+
+Additional headers for the HTTP request.  This is either an ARRAY of
+key-value pairs, or an HTTP::Headers OBJECT.
+
+=back
+
+. ignore_unused_tags => BOOLEAN|REGEXP
+
+. key_rewrite => HASH|CODE|ARRAY-of-HASH-and-CODE
+
+. opts_readers => ARRAY-OF-PAIRS
+
+. opts_rw => ARRAY-OF-PAIRS
+
+. opts_writers => ARRAY-OF-PAIRS
+
+. prefixes => HASH|ARRAY-of-PAIRS
+
+. schema_dirs => DIRECTORY|ARRAY-OF-DIRECTORIES
+
+. typemap => HASH
+
+. user_agent => OBJECT
+
+=over 4
+
+You may pass your own L<LWP::UserAgent> object, fully loaded with your
+own settings. When you do not, one will be created for you.
+
+=back
+
+. xmlformat => 0|1|2
+
+=over 4
+
+XML::LibXML has three different output formats. Format C<0> is the
+most condense, and C<1> is nicely indented. Of course, a zero value is
+fastest.
+
+=back
+
+=back
+
+=head2 Accessors
+
+$obj-E<gt>B<addHook>(HOOKDATA|HOOK|undef)
+
+=over 4
+
+See L<XML::Compile::Schema/"Accessors">
+
+=back
+
+$obj-E<gt>B<addHooks>(HOOK, [HOOK, ...])
+
+=over 4
+
+See L<XML::Compile::Schema/"Accessors">
+
+=back
+
+$obj-E<gt>B<addKeyRewrite>(PREDEF|CODE|HASH, ...)
+
+=over 4
+
+See L<XML::Compile::Schema/"Accessors">
+
+=back
+
+$obj-E<gt>B<addSchemaDirs>(DIRECTORIES|FILENAME)
+
+XML::Compile::RPC::Client-E<gt>B<addSchemaDirs>(DIRECTORIES|FILENAME)
+
+=over 4
+
+See L<XML::Compile/"Accessors">
+
+=back
+
+$obj-E<gt>B<addSchemas>(XML, OPTIONS)
+
+=over 4
+
+See L<XML::Compile::Schema/"Accessors">
+
+=back
+
+$obj-E<gt>B<addTypemap>(PAIR)
+
+=over 4
+
+See L<XML::Compile::Schema/"Accessors">
+
+=back
+
+$obj-E<gt>B<addTypemaps>(PAIRS)
+
+=over 4
+
+See L<XML::Compile::Schema/"Accessors">
+
+=back
+
+$obj-E<gt>B<allowUndeclared>([BOOLEAN])
+
+=over 4
+
+See L<XML::Compile::Cache/"Accessors">
+
+=back
+
+$obj-E<gt>B<blockNamespace>(NAMESPACE|TYPE|HASH|CODE|ARRAY)
+
+=over 4
+
+See L<XML::Compile::Schema/"Accessors">
+
+=back
+
+$obj-E<gt>B<hooks>
+
+=over 4
+
+See L<XML::Compile::Schema/"Accessors">
+
+=back
+
+$obj-E<gt>B<prefix>(PREFIX)
+
+=over 4
+
+See L<XML::Compile::Cache/"Accessors">
+
+=back
+
+$obj-E<gt>B<prefixFor>(URI)
+
+=over 4
+
+See L<XML::Compile::Cache/"Accessors">
+
+=back
+
+$obj-E<gt>B<prefixed>(TYPE)
+
+=over 4
+
+See L<XML::Compile::Cache/"Accessors">
+
+=back
+
+$obj-E<gt>B<prefixes>([PAIRS|ARRAY|HASH])
+
+=over 4
+
+See L<XML::Compile::Cache/"Accessors">
+
+=back
+
+$obj-E<gt>B<useSchema>(SCHEMA, [SCHEMA])
+
+=over 4
+
+See L<XML::Compile::Schema/"Accessors">
+
+=back
+
+=head2 Compilers
+
+$obj-E<gt>B<compile>(('READER'|'WRITER'), TYPE, OPTIONS)
+
+=over 4
+
+See L<XML::Compile::Schema/"Compilers">
+
+=back
+
+$obj-E<gt>B<compileAll>(['READER'|'WRITER'|'RW', [NAMESPACE]])
+
+=over 4
+
+See L<XML::Compile::Cache/"Compilers">
+
+=back
+
+XML::Compile::RPC::Client-E<gt>B<dataToXML>(NODE|REF-XML-STRING|XML-STRING|FILENAME|FILEHANDLE|KNOWN)
+
+=over 4
+
+See L<XML::Compile/"Compilers">
+
+=back
+
+$obj-E<gt>B<reader>(TYPE|NAME, OPTIONS)
+
+=over 4
+
+See L<XML::Compile::Cache/"Compilers">
+
+=back
+
+$obj-E<gt>B<template>('XML'|'PERL', TYPE, OPTIONS)
+
+=over 4
+
+See L<XML::Compile::Schema/"Compilers">
+
+=back
+
+$obj-E<gt>B<writer>(TYPE|NAME)
+
+=over 4
+
+See L<XML::Compile::Cache/"Compilers">
+
+=back
+
+=head2 Administration
+
+$obj-E<gt>B<declare>('READER'|'WRITER'|'RW', TYPE|ARRAY-of-TYPES, OPTIONS)
+
+=over 4
+
+See L<XML::Compile::Cache/"Administration">
+
+=back
+
+$obj-E<gt>B<elements>
+
+=over 4
+
+See L<XML::Compile::Schema/"Administration">
+
+=back
+
+$obj-E<gt>B<findName>(NAME)
+
+=over 4
+
+See L<XML::Compile::Cache/"Administration">
+
+=back
+
+$obj-E<gt>B<findSchemaFile>(FILENAME)
+
+XML::Compile::RPC::Client-E<gt>B<findSchemaFile>(FILENAME)
+
+=over 4
+
+See L<XML::Compile/"Administration">
+
+=back
+
+$obj-E<gt>B<importDefinitions>(XMLDATA, OPTIONS)
+
+=over 4
+
+See L<XML::Compile::Schema/"Administration">
+
+=back
+
+$obj-E<gt>B<knownNamespace>(NAMESPACE|PAIRS)
+
+XML::Compile::RPC::Client-E<gt>B<knownNamespace>(NAMESPACE|PAIRS)
+
+=over 4
+
+See L<XML::Compile/"Administration">
+
+=back
+
+$obj-E<gt>B<namespaces>
+
+=over 4
+
+See L<XML::Compile::Schema/"Administration">
+
+=back
+
+$obj-E<gt>B<printIndex>([FILEHANDLE], OPTIONS)
+
+=over 4
+
+See L<XML::Compile::Cache/"Administration">
+
+=back
+
+$obj-E<gt>B<types>
+
+=over 4
+
+See L<XML::Compile::Schema/"Administration">
+
+=back
+
+$obj-E<gt>B<walkTree>(NODE, CODE)
+
+=over 4
+
+See L<XML::Compile/"Administration">
+
+=back
+
+=head2 Handlers
+
+$obj-E<gt>B<call>(METHOD, PARAM-PAIRS)
+
+=over 4
+
+example: 
+
+ my ($rc, $response) = $rpc->call('getQuote', string => 'IBM');
+ $rc == 0
+     or die "error: $response\n";
+ my $trace = $rpc->trace;  # facts about the last call
+
+ # same call, via autoload
+ my ($rc, $response) = $rpc->getQuote(string => 'IBM');
+
+=back
+
+$obj-E<gt>B<printTrace>([FILEHANDLE])
+
+=over 4
+
+Pretty print the trace, by default to STDERR.
+
+=back
+
+$obj-E<gt>B<trace>
+
+=over 4
+
+Returns a HASH with various facts about the last call; timings,
+the request and the response from the server. Be aware that C<LWP>
+will add some more header lines to the request before it is sent.
+
+=back
+
+=head1 DETAILS
+
+=head1 SEE ALSO
+
+This module is part of XML-Compile-RPC distribution version 0.10,
+built on October 24, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
+
+All modules in this suite:
+L<XML::Compile>,
+L<XML::Compile::SOAP>,
+L<XML::Compile::SOAP12>,
+L<XML::Compile::SOAP::Daemon>,
+L<XML::Compile::Tester>,
+L<XML::Compile::Cache>,
+L<XML::Compile::Dumper>,
+L<XML::Compile::RPC>,
+L<XML::Rewrite>,
+and
+L<XML::LibXML::Simple>.
+
+Please post questions or ideas to the mailinglist at
+F<http://lists.scsys.co.uk/cgi-bin/mailman/listinfo/xml-compile>
+For life contact with other developers, visit the C<#xml-compile> channel
+on C<irc.perl.org>.
+
+=head1 LICENSE
+
+Copyrights 2009 by Mark Overmeer. For other contributors see ChangeLog.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+See F<http://www.perl.com/perl/misc/Artistic.html>
+
