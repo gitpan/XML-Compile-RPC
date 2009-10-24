@@ -441,9 +441,51 @@ will add some more header lines to the request before it is sent.
 
 =head1 DETAILS
 
+=head2 Create an interface
+
+My advice: if you have to use XML-RPC, first create an abstraction
+layer like this:
+
+    package My::Service;
+    use base 'XML::Compile::RPC::Client';
+
+    sub getQuote($)
+    {   my ($self, $symbol) = @_;
+        my $params = struct_from_hash string => {symbol => $symbol};
+        my ($rc, $data) = $self->call(getQuote => $params);
+        $rc==0 or die "error: $data ($rc)";
+        # now simplify $data
+        $data;
+    }
+
+Now, the main program runs like this:
+
+   my $service = My::Service->new(destination => $uri);
+   my $price   = $service->getQuote('IBM');
+
+=head2 Comparison
+
+The XML::RPC module uses the XML::TreePP XML parser and parameter type
+guessing, where XML::Compile::RPC uses strict typed and validated XML
+via XML::LibXML: smaller chance on unexpected behavior. For instance,
+the XML::Compile::RPC client application will not produce incorrect
+messages when a string contains only digits. Besides, XML::RPC does not
+support all data types.
+
+XML::RPC::Fast is compatible with XML::RPC, but uses XML::LibXML which
+is faster and safer. It implements "manually" what L<XML::Compile|XML::Compile> offers
+for free in XML::Compile::RPC. Getting the types of the parameters right
+is difficult for other things than strings and numbers.
+
+Finally, RPC::XML makes you handle parameters as object: create a typed
+object for each passed value. It offers a standard method signatures to 
+simplify that task. On the other hand, RPC::XML does offer more features.
+
+There are many ways to do it.
+
 =head1 SEE ALSO
 
-This module is part of XML-Compile-RPC distribution version 0.11,
+This module is part of XML-Compile-RPC distribution version 0.12,
 built on October 24, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
 
 All modules in this suite:

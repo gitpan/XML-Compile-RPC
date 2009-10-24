@@ -7,7 +7,7 @@ use strict;
 
 package XML::Compile::RPC::Client;
 use vars '$VERSION';
-$VERSION = '0.11';
+$VERSION = '0.12';
 
 use base 'XML::Compile::RPC';
 
@@ -131,4 +131,8 @@ sub AUTOLOAD
 }
 
 sub DESTROY {}   # avoid DESTROY to AUTOLOAD
+
 1;
+
+__END__
+
