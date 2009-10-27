@@ -7,7 +7,7 @@ use strict;
 
 package XML::Compile::RPC::Client;
 use vars '$VERSION';
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 use base 'XML::Compile::RPC';
 
@@ -45,6 +45,9 @@ sub init($)
 
     $self;
 }
+
+
+sub headers() {shift->{headers}}
 
 
 my %trace;

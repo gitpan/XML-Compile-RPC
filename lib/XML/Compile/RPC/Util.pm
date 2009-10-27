@@ -7,7 +7,7 @@ use strict;
 
 package XML::Compile::RPC::Util;
 use vars '$VERSION';
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 use base 'Exporter';
 
@@ -84,8 +84,9 @@ sub rpcarray_from($@)
 
 
 sub fault_code($)
-{   my $h = struct_to_hash shift->{value}{struct};
-    wantarray ? ($h->{faultCode}, $h->{faultString}) : $h->{faultCode};
+{   my $h  = struct_to_hash shift->{value}{struct};
+    my $fc = $h->{faultCode} || -1;
+    wantarray ? ($fc, $h->{faultString}) : $fc;
 }
 
 

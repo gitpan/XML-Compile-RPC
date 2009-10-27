@@ -210,6 +210,15 @@ See L<XML::Compile::Schema/"Accessors">
 
 =back
 
+$obj-E<gt>B<headers>
+
+=over 4
+
+Returns the internal HTTP::Headers, which you may modify (for instance
+to change/set the Authentication field.
+
+=back
+
 $obj-E<gt>B<hooks>
 
 =over 4
@@ -485,8 +494,8 @@ There are many ways to do it.
 
 =head1 SEE ALSO
 
-This module is part of XML-Compile-RPC distribution version 0.12,
-built on October 24, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
+This module is part of XML-Compile-RPC distribution version 0.13,
+built on October 27, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
 
 All modules in this suite:
 L<XML::Compile>,
@@ -497,8 +506,9 @@ L<XML::Compile::Tester>,
 L<XML::Compile::Cache>,
 L<XML::Compile::Dumper>,
 L<XML::Compile::RPC>,
-L<XML::Rewrite>,
 and
+L<XML::Rewrite>,
+L<XML::ExistDB>,
 L<XML::LibXML::Simple>.
 
 Please post questions or ideas to the mailinglist at
