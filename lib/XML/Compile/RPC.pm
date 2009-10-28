@@ -7,7 +7,7 @@ use strict;
 
 package XML::Compile::RPC;
 use vars '$VERSION';
-$VERSION = '0.13';
+$VERSION = '0.14';
 
 use base 'XML::Compile::Cache';
 
@@ -31,6 +31,10 @@ sub init($)
 
     (my $xsd = __FILE__) =~ s,\.pm$,/xml-rpc.xsd,;
     $self->importDefinitions($xsd);
+
+    # only declared methods are accepted by the Cache
+    $self->declare(WRITER => 'methodCall');
+    $self->declare(READER => 'methodResponse');
 
     $self;
 }

@@ -2,16 +2,6 @@
 
 XML::Compile::RPC::Client - XML-RPC based on unofficial schema
 
-=head1 INHERITANCE
-
- XML::Compile::RPC::Client
-   is a XML::Compile::RPC
-   is a XML::Compile::Cache
-   is a XML::Compile::Schema
-   is a XML::Compile
-
-=head1 SYNOPSIS
-
 =head1 DESCRIPTION
 
 Client XML-RPC implementation, based on an unofficial XML-RPC schema. The
@@ -40,29 +30,13 @@ XML::Compile::RPC::Client-E<gt>B<new>(OPTIONS)
 
 =over 4
 
- Option                --Defined in     --Default
- allow_undeclared        XML::Compile::Cache  <false>
- any_element             XML::Compile::Cache  'SKIP_ALL'
- autoload_underscore_is                   '_'
- block_namespace         XML::Compile::Schema  []
- destination                              <required>
- hook                    XML::Compile::Schema  undef
- hooks                   XML::Compile::Schema  []
- http_header                              []
- ignore_unused_tags      XML::Compile::Schema  <false>
- key_rewrite             XML::Compile::Schema  []
- opts_readers            XML::Compile::RPC  []
- opts_rw                 XML::Compile::RPC  []
- opts_writers            XML::Compile::RPC  []
- prefixes                XML::Compile::Cache  <smart>
- schema_dirs             XML::Compile     undef
- typemap                 XML::Compile::Schema  {}
- user_agent                               <created internally>
- xmlformat                                0
-
-. allow_undeclared => BOOLEAN
-
-. any_element => CODE|'TAKE_ALL'|'SKIP_ALL'|'ATTEMPT'
+ Option                --Default
+ autoload_underscore_is  '_'
+ destination             <required>
+ http_header             []
+ schemas                 <created for you>
+ user_agent              <created internally>
+ xmlformat               0
 
 . autoload_underscore_is => STRING
 
@@ -74,8 +48,6 @@ can use underscores which will B<all> be replaced to STRING value specified.
 
 =back
 
-. block_namespace => NAMESPACE|TYPE|HASH|CODE|ARRAY
-
 . destination => URI
 
 =over 4
@@ -83,10 +55,6 @@ can use underscores which will B<all> be replaced to STRING value specified.
 The address of the XML-RPC server.
 
 =back
-
-. hook => ARRAY-WITH-HOOKDATA | HOOK
-
-. hooks => ARRAY-OF-HOOK
 
 . http_header => ARRAY|OBJECT
 
@@ -97,21 +65,15 @@ key-value pairs, or an HTTP::Headers OBJECT.
 
 =back
 
-. ignore_unused_tags => BOOLEAN|REGEXP
+. schemas => OBJECT
 
-. key_rewrite => HASH|CODE|ARRAY-of-HASH-and-CODE
+=over 4
 
-. opts_readers => ARRAY-OF-PAIRS
+When you need special additional trics with the schemas, you may pass
+your own L<XML::Compile::RPC|XML::Compile::RPC> instance. However, by default this is
+created for you.
 
-. opts_rw => ARRAY-OF-PAIRS
-
-. opts_writers => ARRAY-OF-PAIRS
-
-. prefixes => HASH|ARRAY-of-PAIRS
-
-. schema_dirs => DIRECTORY|ARRAY-OF-DIRECTORIES
-
-. typemap => HASH
+=back
 
 . user_agent => OBJECT
 
@@ -136,80 +98,6 @@ fastest.
 
 =head2 Accessors
 
-$obj-E<gt>B<addHook>(HOOKDATA|HOOK|undef)
-
-=over 4
-
-See L<XML::Compile::Schema/"Accessors">
-
-=back
-
-$obj-E<gt>B<addHooks>(HOOK, [HOOK, ...])
-
-=over 4
-
-See L<XML::Compile::Schema/"Accessors">
-
-=back
-
-$obj-E<gt>B<addKeyRewrite>(PREDEF|CODE|HASH, ...)
-
-=over 4
-
-See L<XML::Compile::Schema/"Accessors">
-
-=back
-
-$obj-E<gt>B<addSchemaDirs>(DIRECTORIES|FILENAME)
-
-XML::Compile::RPC::Client-E<gt>B<addSchemaDirs>(DIRECTORIES|FILENAME)
-
-=over 4
-
-See L<XML::Compile/"Accessors">
-
-=back
-
-$obj-E<gt>B<addSchemas>(XML, OPTIONS)
-
-=over 4
-
-See L<XML::Compile::Schema/"Accessors">
-
-=back
-
-$obj-E<gt>B<addTypemap>(PAIR)
-
-=over 4
-
-See L<XML::Compile::Schema/"Accessors">
-
-=back
-
-$obj-E<gt>B<addTypemaps>(PAIRS)
-
-=over 4
-
-See L<XML::Compile::Schema/"Accessors">
-
-=back
-
-$obj-E<gt>B<allowUndeclared>([BOOLEAN])
-
-=over 4
-
-See L<XML::Compile::Cache/"Accessors">
-
-=back
-
-$obj-E<gt>B<blockNamespace>(NAMESPACE|TYPE|HASH|CODE|ARRAY)
-
-=over 4
-
-See L<XML::Compile::Schema/"Accessors">
-
-=back
-
 $obj-E<gt>B<headers>
 
 =over 4
@@ -219,187 +107,11 @@ to change/set the Authentication field.
 
 =back
 
-$obj-E<gt>B<hooks>
+$obj-E<gt>B<schemas>
 
 =over 4
 
-See L<XML::Compile::Schema/"Accessors">
-
-=back
-
-$obj-E<gt>B<prefix>(PREFIX)
-
-=over 4
-
-See L<XML::Compile::Cache/"Accessors">
-
-=back
-
-$obj-E<gt>B<prefixFor>(URI)
-
-=over 4
-
-See L<XML::Compile::Cache/"Accessors">
-
-=back
-
-$obj-E<gt>B<prefixed>(TYPE)
-
-=over 4
-
-See L<XML::Compile::Cache/"Accessors">
-
-=back
-
-$obj-E<gt>B<prefixes>([PAIRS|ARRAY|HASH])
-
-=over 4
-
-See L<XML::Compile::Cache/"Accessors">
-
-=back
-
-$obj-E<gt>B<useSchema>(SCHEMA, [SCHEMA])
-
-=over 4
-
-See L<XML::Compile::Schema/"Accessors">
-
-=back
-
-=head2 Compilers
-
-$obj-E<gt>B<compile>(('READER'|'WRITER'), TYPE, OPTIONS)
-
-=over 4
-
-See L<XML::Compile::Schema/"Compilers">
-
-=back
-
-$obj-E<gt>B<compileAll>(['READER'|'WRITER'|'RW', [NAMESPACE]])
-
-=over 4
-
-See L<XML::Compile::Cache/"Compilers">
-
-=back
-
-XML::Compile::RPC::Client-E<gt>B<dataToXML>(NODE|REF-XML-STRING|XML-STRING|FILENAME|FILEHANDLE|KNOWN)
-
-=over 4
-
-See L<XML::Compile/"Compilers">
-
-=back
-
-$obj-E<gt>B<reader>(TYPE|NAME, OPTIONS)
-
-=over 4
-
-See L<XML::Compile::Cache/"Compilers">
-
-=back
-
-$obj-E<gt>B<template>('XML'|'PERL', TYPE, OPTIONS)
-
-=over 4
-
-See L<XML::Compile::Schema/"Compilers">
-
-=back
-
-$obj-E<gt>B<writer>(TYPE|NAME)
-
-=over 4
-
-See L<XML::Compile::Cache/"Compilers">
-
-=back
-
-=head2 Administration
-
-$obj-E<gt>B<declare>('READER'|'WRITER'|'RW', TYPE|ARRAY-of-TYPES, OPTIONS)
-
-=over 4
-
-See L<XML::Compile::Cache/"Administration">
-
-=back
-
-$obj-E<gt>B<elements>
-
-=over 4
-
-See L<XML::Compile::Schema/"Administration">
-
-=back
-
-$obj-E<gt>B<findName>(NAME)
-
-=over 4
-
-See L<XML::Compile::Cache/"Administration">
-
-=back
-
-$obj-E<gt>B<findSchemaFile>(FILENAME)
-
-XML::Compile::RPC::Client-E<gt>B<findSchemaFile>(FILENAME)
-
-=over 4
-
-See L<XML::Compile/"Administration">
-
-=back
-
-$obj-E<gt>B<importDefinitions>(XMLDATA, OPTIONS)
-
-=over 4
-
-See L<XML::Compile::Schema/"Administration">
-
-=back
-
-$obj-E<gt>B<knownNamespace>(NAMESPACE|PAIRS)
-
-XML::Compile::RPC::Client-E<gt>B<knownNamespace>(NAMESPACE|PAIRS)
-
-=over 4
-
-See L<XML::Compile/"Administration">
-
-=back
-
-$obj-E<gt>B<namespaces>
-
-=over 4
-
-See L<XML::Compile::Schema/"Administration">
-
-=back
-
-$obj-E<gt>B<printIndex>([FILEHANDLE], OPTIONS)
-
-=over 4
-
-See L<XML::Compile::Cache/"Administration">
-
-=back
-
-$obj-E<gt>B<types>
-
-=over 4
-
-See L<XML::Compile::Schema/"Administration">
-
-=back
-
-$obj-E<gt>B<walkTree>(NODE, CODE)
-
-=over 4
-
-See L<XML::Compile/"Administration">
+Returns the internal L<XML::Compile::RPC|XML::Compile::RPC> object.
 
 =back
 
@@ -494,8 +206,8 @@ There are many ways to do it.
 
 =head1 SEE ALSO
 
-This module is part of XML-Compile-RPC distribution version 0.13,
-built on October 27, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
+This module is part of XML-Compile-RPC distribution version 0.14,
+built on October 28, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
 
 All modules in this suite:
 L<XML::Compile>,

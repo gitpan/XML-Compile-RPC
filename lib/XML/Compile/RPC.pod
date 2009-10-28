@@ -1,6 +1,6 @@
 =head1 NAME
 
-XML::Compile::RPC - base-class for ::Client and ::Server
+XML::Compile::RPC - XML-RPC schema handler
 
 =head1 INHERITANCE
 
@@ -9,17 +9,19 @@ XML::Compile::RPC - base-class for ::Client and ::Server
    is a XML::Compile::Schema
    is a XML::Compile
 
- XML::Compile::RPC is extended by
-   XML::Compile::RPC::Client
-
 =head1 SYNOPSIS
 
  # you should initiate the ::Client
 
 =head1 DESCRIPTION
 
-This class implements commonalities between XML-RPC client and server
-implementations.  The server has not been implemented (yet).
+This class handles the XML-RPC pseudo schema for XML-RPC client or
+servers.  The server has not been implemented (yet).
+
+XML-RPC does not have an official schema, however with some craftsmanship,
+one has been produced.  It actually works quite well. Some types,
+especially the data type, needed some help to fit onto the schema type
+definitions.
 
 =head1 METHODS
 
@@ -336,8 +338,8 @@ See L<XML::Compile/"Administration">
 
 =head1 SEE ALSO
 
-This module is part of XML-Compile-RPC distribution version 0.13,
-built on October 27, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
+This module is part of XML-Compile-RPC distribution version 0.14,
+built on October 28, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
 
 All modules in this suite:
 L<XML::Compile>,

@@ -7,21 +7,22 @@ use strict;
 
 package XML::Compile::RPC::Client;
 use vars '$VERSION';
-$VERSION = '0.13';
+$VERSION = '0.14';
 
-use base 'XML::Compile::RPC';
 
-use Log::Report 'xml-compile-rpc';
+use XML::Compile::RPC        ();
 use XML::Compile::RPC::Util  qw/fault_code/;
+
+use Log::Report              'xml-compile-rpc';
 use Time::HiRes              qw/gettimeofday tv_interval/;
 use HTTP::Request            ();
 use LWP::UserAgent           ();
 
 
+sub new(@) { my $class = shift; (bless {}, $class)->init({@_}) }
+
 sub init($)
 {   my ($self, $args) = @_;
-    $self->SUPER::init($args);
-
     $self->{user_agent}  = $args->{user_agent} || LWP::UserAgent->new;
     $self->{xmlformat}   = $args->{xmlformat}  || 0;
     $self->{auto_under}  = $args->{autoload_underscore_is};
@@ -38,16 +39,15 @@ sub init($)
         or $headers->content_type('text/xml');
 
     $self->{headers}     = $headers;
-
-    # only declared methods are accepted by the Cache
-    $self->declare(WRITER => 'methodCall');
-    $self->declare(READER => 'methodResponse');
-
+    $self->{schemas}     = $args->{schemas} ||= XML::Compile::RPC->new;
     $self;
 }
 
 
 sub headers() {shift->{headers}}
+
+
+sub schemas() {shift->{schemas}}
 
 
 my %trace;
@@ -100,7 +100,7 @@ sub _callmsg($@)
     }
 
     my $doc = XML::LibXML::Document->new('1.0', 'UTF-8');
-    my $xml = $self->writer('methodCall')->($doc
+    my $xml = $self->{schemas}->writer('methodCall')->($doc
       , { methodName => $method, params => { param => \@params }});
     $doc->setDocumentElement($xml);
     $doc;
@@ -110,14 +110,15 @@ sub _request($)
 {   my ($self, $doc) = @_;
     HTTP::Request->new
       ( POST => $self->{destination}
-      , $self->{header}
+      , $self->{headers}
       , $doc->toString($self->{xmlformat})
       );
 }
 
 sub _respmsg($)
 {   my ($self, $xml) = @_;
-    my $data = $self->reader('methodResponse')->($xml);
+    length $xml or return (1, "no xml received");
+    my $data = $self->{schemas}->reader('methodResponse')->($xml);
     return fault_code $data->{fault}
         if $data->{fault};
 
