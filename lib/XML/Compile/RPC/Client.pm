@@ -1,4 +1,4 @@
-# Copyrights 2009 by Mark Overmeer.
+# Copyrights 2009-2010 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
 # Pod stripped from pm file by OODoc 1.06.
@@ -7,13 +7,13 @@ use strict;
 
 package XML::Compile::RPC::Client;
 use vars '$VERSION';
-$VERSION = '0.14';
+$VERSION = '0.15';
 
 
 use XML::Compile::RPC        ();
 use XML::Compile::RPC::Util  qw/fault_code/;
 
-use Log::Report              'xml-compile-rpc';
+use Log::Report              'xml-compile-rpc', syntax => 'LONG';
 use Time::HiRes              qw/gettimeofday tv_interval/;
 use HTTP::Request            ();
 use LWP::UserAgent           ();

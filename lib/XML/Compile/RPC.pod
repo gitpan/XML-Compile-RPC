@@ -48,7 +48,7 @@ XML::Compile::RPC-E<gt>B<new>(OPTIONS)
 
 . allow_undeclared => BOOLEAN
 
-. any_element => CODE|'TAKE_ALL'|'SKIP_ALL'|'ATTEMPT'
+. any_element => CODE|'TAKE_ALL'|'SKIP_ALL'|'ATTEMPT'|'SLOPPY'
 
 . block_namespace => NAMESPACE|TYPE|HASH|CODE|ARRAY
 
@@ -232,7 +232,7 @@ See L<XML::Compile::Cache/"Compilers">
 
 =back
 
-$obj-E<gt>B<template>('XML'|'PERL', TYPE, OPTIONS)
+$obj-E<gt>B<template>('XML'|'PERL', ELEMENT, OPTIONS)
 
 =over 4
 
@@ -334,18 +334,21 @@ See L<XML::Compile/"Administration">
 
 =back
 
+=head2 Administration
+
 =head1 DETAILS
 
 =head1 SEE ALSO
 
-This module is part of XML-Compile-RPC distribution version 0.14,
-built on October 28, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
+This module is part of XML-Compile-RPC distribution version 0.15,
+built on June 17, 2010. Website: F<http://perl.overmeer.net/xml-compile/>
 
 All modules in this suite:
 L<XML::Compile>,
 L<XML::Compile::SOAP>,
 L<XML::Compile::SOAP12>,
 L<XML::Compile::SOAP::Daemon>,
+L<XML::Compile::SOAP::WSA>,
 L<XML::Compile::Tester>,
 L<XML::Compile::Cache>,
 L<XML::Compile::Dumper>,
@@ -362,7 +365,7 @@ on C<irc.perl.org>.
 
 =head1 LICENSE
 
-Copyrights 2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2009-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

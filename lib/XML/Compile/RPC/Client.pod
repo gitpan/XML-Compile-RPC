@@ -42,9 +42,10 @@ XML::Compile::RPC::Client-E<gt>B<new>(OPTIONS)
 
 =over 4
 
-When calls are made using the autoload mechanism, then you will encounter
-problems when the method names contain dashes. So, with this option, you
-can use underscores which will B<all> be replaced to STRING value specified.
+When calls are made using the autoload mechanism you may encounter
+problems when the method names contain dashes (C<->). So, with this
+option, you can use underscores which will B<all> be replaced to STRING
+value specified.
 
 =back
 
@@ -111,7 +112,8 @@ $obj-E<gt>B<schemas>
 
 =over 4
 
-Returns the internal L<XML::Compile::RPC|XML::Compile::RPC> object.
+Returns the internal L<XML::Compile::RPC|XML::Compile::RPC> object, used to encode and
+decode the exchanged XML messages.
 
 =back
 
@@ -165,24 +167,26 @@ will add some more header lines to the request before it is sent.
 =head2 Create an interface
 
 My advice: if you have to use XML-RPC, first create an abstraction
-layer like this:
+layer. That layer should implement error handling and logging.
+Have a look at XML::eXistDB::Client for an extended example.
 
-    package My::Service;
-    use base 'XML::Compile::RPC::Client';
+  package My::Service;
+  use base 'XML::Compile::RPC::Client';
 
-    sub getQuote($)
-    {   my ($self, $symbol) = @_;
-        my $params = struct_from_hash string => {symbol => $symbol};
-        my ($rc, $data) = $self->call(getQuote => $params);
-        $rc==0 or die "error: $data ($rc)";
-        # now simplify $data
-        $data;
-    }
+  sub getQuote($)
+  {   my ($self, $symbol) = @_;
+      my $params = struct_from_hash string => {symbol => $symbol};
+      my ($rc, $data) = $self->call(getQuote => $params);
+      $rc==0 or die "error: $data ($rc)";
+
+      # now simplify $data
+      $data;
+  }
 
 Now, the main program runs like this:
 
-   my $service = My::Service->new(destination => $uri);
-   my $price   = $service->getQuote('IBM');
+  my $service = My::Service->new(destination => $uri);
+  my $price   = $service->getQuote('IBM');
 
 =head2 Comparison
 
@@ -193,10 +197,10 @@ the XML::Compile::RPC client application will not produce incorrect
 messages when a string contains only digits. Besides, XML::RPC does not
 support all data types.
 
-XML::RPC::Fast is compatible with XML::RPC, but uses XML::LibXML which
-is faster and safer. It implements "manually" what L<XML::Compile|XML::Compile> offers
-for free in XML::Compile::RPC. Getting the types of the parameters right
-is difficult for other things than strings and numbers.
+XML::RPC::Fast is compatible with XML::RPC, but uses XML::LibXML
+which is faster and safer. It implements "manually" what L<XML::Compile|XML::Compile>
+offers for free in XML::Compile::RPC. Getting the types of the parameters
+right is difficult for other things than strings and numbers.
 
 Finally, RPC::XML makes you handle parameters as object: create a typed
 object for each passed value. It offers a standard method signatures to 
@@ -206,14 +210,15 @@ There are many ways to do it.
 
 =head1 SEE ALSO
 
-This module is part of XML-Compile-RPC distribution version 0.14,
-built on October 28, 2009. Website: F<http://perl.overmeer.net/xml-compile/>
+This module is part of XML-Compile-RPC distribution version 0.15,
+built on June 17, 2010. Website: F<http://perl.overmeer.net/xml-compile/>
 
 All modules in this suite:
 L<XML::Compile>,
 L<XML::Compile::SOAP>,
 L<XML::Compile::SOAP12>,
 L<XML::Compile::SOAP::Daemon>,
+L<XML::Compile::SOAP::WSA>,
 L<XML::Compile::Tester>,
 L<XML::Compile::Cache>,
 L<XML::Compile::Dumper>,
@@ -230,7 +235,7 @@ on C<irc.perl.org>.
 
 =head1 LICENSE
 
-Copyrights 2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2009-2010 by Mark Overmeer. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

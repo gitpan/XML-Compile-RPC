@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                XML-Compile-RPC
-version:             0.14
+version:             0.15
 abstract:            XML-RPC client
 license:             perl
 author:              
@@ -8,7 +8,7 @@ author:
 generated_by:        ExtUtils::MakeMaker version 6.42
 distribution_type:   module
 requires:     
-    Log::Report:                   0.25
+    Log::Report:                   0.28
     LWP::UserAgent:                0
     Test::More:                    0.54
     Test::Pod:                     1.00
