@@ -1,13 +1,13 @@
-# Copyrights 2009-2010 by Mark Overmeer.
+# Copyrights 2009-2013 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.06.
+# Pod stripped from pm file by OODoc 2.01.
 use warnings;
 use strict;
 
 package XML::Compile::RPC;
 use vars '$VERSION';
-$VERSION = '0.15';
+$VERSION = '0.16';
 
 use base 'XML::Compile::Cache';
 
@@ -35,15 +35,14 @@ sub init($)
     # only declared methods are accepted by the Cache
     $self->declare(WRITER => 'methodCall');
     $self->declare(READER => 'methodResponse');
-
     $self;
 }
 
 sub _rewrite_string($$$$$)
 {   my ($element, $reader, $path, $type, $replaced) = @_;
-#   use Carp; confess $element->childNodes;
+#   panic $element->childNodes;
 
-      grep( {$_->isa('XML::LibXML::Element')} $element->childNodes)
+      (grep $_->isa('XML::LibXML::Element'), $element->childNodes)
     ? $replaced->($element)
     : (value => {string => $element->textContent});
 }
