@@ -25,4 +25,4 @@ requires:
   XML::Compile: 1.08
   XML::Compile::Cache: 0.92
   XML::Compile::Tester: 0.05
-version: 0.16
+version: 0.17

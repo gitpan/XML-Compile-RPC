@@ -7,7 +7,7 @@ use strict;
 
 package XML::Compile::RPC::Client;
 use vars '$VERSION';
-$VERSION = '0.16';
+$VERSION = '0.17';
 
 
 use XML::Compile::RPC        ();

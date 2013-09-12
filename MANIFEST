@@ -14,7 +14,6 @@ t/10create.t
 t/11string.t
 t/12date.t
 t/20util.t
-t/99pod.t
 xt/99pod.t
 META.yml                                 Module YAML meta-data (added by MakeMaker)
 META.json                                Module JSON meta-data (added by MakeMaker)

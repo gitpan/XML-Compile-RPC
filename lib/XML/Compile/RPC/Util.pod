@@ -164,8 +164,8 @@ example:
 
 =head1 SEE ALSO
 
-This module is part of XML-Compile-RPC distribution version 0.16,
-built on August 18, 2013. Website: F<http://perl.overmeer.net/xml-compile/>
+This module is part of XML-Compile-RPC distribution version 0.17,
+built on September 12, 2013. Website: F<http://perl.overmeer.net/xml-compile/>
 
 Other distributions in this suite:
 L<XML::Compile>,
